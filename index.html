@@ -1,0 +1,51 @@
+<html>
+  <head>
+        <title>Convert RadioMobile coverage maps to KML</title>
+        <style type="text/css">
+                #map { width:500px; height:500px;}
+        </style>
+    <script src="http://maps.google.com/maps?file=api&amp;v=1&amp;key=ABQIAAAAjji80q9DSq-S6zkHpxXpzBS8V7hspq7DCQDmK7BA4TUdmlIJVxTnhrel_y23YmhAbO-6G0FEpx5HYA" type="text/javascript"></script>
+        <script type="text/javascript">
+                function showMap() {
+
+                        var geocoder = new GClientGeocoder();
+                        geocoder.setCache=null;
+
+                        // Google Maps caches KML files -- use a random query string parameter set to Date.
+                        var url_end = "?nocache=" + (new Date()).valueOf();
+                        var server_root = "http://www2.tessi.com.br/mapas/";
+                        var kmlFile = server_root + "pqe.kml" + url_end;
+
+                        var map = new GMap2(document.getElementById("map"));
+                        // Add controls
+                        map.addControl(new GLargeMapControl());
+                        map.addControl(new GMapTypeControl());
+                        geoxml = new GGeoXml(kmlFile);
+                        map.addOverlay(geoxml);
+
+                        // Default zoom level
+                        var zl = 14;
+                        map.setCenter(new GLatLng(-8.362589,-36.690044),zl);
+                }
+
+                window.onload = showMap;
+        </script>
+  </head>
+<body>
+
+Create a RadioMobile coverage map using this <a href="http://radiomobile.pe1mew.nl/?How_to:Work_with_Google_Earth:Import_coverage...">guide</a>.
+<p>
+The problem with using the png file that RadioMobile created in Google Maps is that it is impossible to create a transparent overlay.  This utility will transform the png file into a kml polygon that can be used as a transparent overlay.
+<p>
+To use it, upload the kml and png files that were created by Radio Mobile.  The form will return a kml file that can be opened in Google Earth or used as an overlay in Google Maps.  I use this as a <a href="http://www.littled.net/2007/06/23/kml-overlays-in-google-maps-in-two-minutes/">guide</a>.
+<p>
+<form enctype="multipart/form-data" action="svg2kml.php" method="post">
+   KML File: <input type="FILE" name="ufile[]"/><p>
+   PNG File: <input type="FILE" name="ufile[]"/><p>
+   <input type="submit" name="Upload" value="Upload" />
+</form>
+
+<div id="map"></div>
+
+</body>
+</html>
